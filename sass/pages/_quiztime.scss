@@ -1,0 +1,213 @@
+.quiz-play {
+  background: linear-gradient(to right, #277aa3, #0cb3d5);
+  opacity: 1;
+  width: auto;
+  height: auto;
+  display: none;
+  padding: 2em 3em;
+  text-align: center;
+  position: relative;
+  margin-top: -2em;
+  animation: slideIn 1s;
+  @include media(">700px", "<=1050px") {
+    margin-top: 2.5em;
+  }
+  @include media(">550px", "<=700px") {
+    margin-top: 0em;
+  }
+  @include media("<=550px") {
+    margin-top: 1.5em;
+    padding: 2em;
+  }
+  &__top {
+    display: grid;
+    align-items: center;
+    grid-template-columns: 0.1fr 1fr;
+    margin-bottom: 2em;
+    @include media("<=550px") {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__heading {
+    margin-right: 0.75em;
+    @include media("<=700px") {
+      font-size: 2.2em;
+    }
+    @include media("<=550px") {
+      margin-right: 0em;
+    }
+  }
+  &__countdown {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    justify-self: self-start;
+    margin-right: 0.75em;
+    @include media("<=550px") {
+      justify-self: normal;
+      margin-right: 0em;
+      margin-bottom: 1em;
+    }
+  }
+  &__time {
+    color: white;
+    position: absolute;
+    font-size: 1.4em;
+  }
+  &__svg {
+    width: 40px;
+    height: 40px;
+    transform: rotateY(-180deg) rotateZ(-90deg);
+    circle {
+      stroke-dasharray: 113px;
+      stroke-dashoffset: 0px;
+      stroke-linecap: round;
+      stroke-width: 2px;
+      stroke: white;
+      fill: none;
+      animation: countdown 10s linear infinite forwards;
+    }
+  }
+  &__question {
+    text-align: initial;
+    color: white;
+    font-weight: 400;
+    font-size: 1.5em;
+    padding-bottom: 0.5em;
+    border-bottom: 2px solid white;
+    width: 100%;
+    max-width: 650px;
+    @include media("<=700px") {
+      font-size: 1.2em;
+    }
+  }
+  &__answers {
+    padding: 1.75em 0em;
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1em 2em;
+    text-align: initial;
+    align-items: center;
+    @include media("<=700px") {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  &__answer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 8px;
+    padding: 0.5em 0.75em;
+    background-color: white;
+    position: relative;
+    max-width: 300px;
+    &::before {
+      width: 34px;
+      height: 100%;
+      position: absolute;
+      border-top-left-radius: 8px;
+      border-bottom-left-radius: 8px;
+      top: 0;
+      font-size: 1.3em;
+      font-weight: 500;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      left: 0;
+      @include media("<=700px") {
+        font-size: 1.1em;
+      }
+    }
+    &--10 {
+      &::before {
+        content: "1";
+        background-color: #fcbdbf;
+      }
+    }
+    &--11 {
+      &::before {
+        content: "2";
+        background-color: #c2a8ea;
+      }
+    }
+    &--12 {
+      &::before {
+        content: "3";
+        background-color: #a2c7f2;
+      }
+    }
+    &--13 {
+      &::before {
+        content: "4";
+        background-color: #f2a2cc;
+      }
+    }
+    &__text {
+      margin-right: auto;
+      color: #0cb3d5;
+      font-weight: 500;
+      margin-left: 2em;
+      @include media("<=700px") {
+        font-size: 0.9em;
+      }
+    }
+    &__icon {
+      transition: 0.3s color;
+      color: #0cb3d5;
+      font-size: 1.4em;
+      margin-left: 0.5em;
+      &:hover {
+        color: #29d190;
+        cursor: pointer;
+      }
+      @include media("<=700px") {
+        font-size: 1.2em;
+      }
+    }
+  }
+  &__btn {
+    color: #0cb3d5;
+    margin-bottom: 1.5em;
+    &:hover {
+      background-color: #29d190;
+      color: white;
+    }
+  }
+  &__tally {
+    color: white;
+    font-size: 1.2em;
+    @include media("<=700px") {
+      font-size: 1em;
+    }
+  }
+}
+
+.correct {
+  background-color: #29d190;
+  transition: 0.3s;
+  .quiz-play__answer__text {
+    color: white;
+  }
+  .quiz-play__answer__icon {
+    color: white;
+    &:hover {
+      color: none;
+    }
+  }
+}
+
+.wrong {
+  background-color: #bf3749;
+  transition: 0.3s;
+  .quiz-play__answer__text {
+    color: white;
+  }
+  .quiz-play__answer__icon {
+    color: white;
+    &:hover {
+      color: none;
+    }
+  }
+}
