@@ -277,10 +277,10 @@ export class QuizBank extends Highway.Renderer {
       const quizBoxes = document.querySelectorAll('.quiz-play__answer')
       quizBoxes.forEach(btn => {
         if (btn.classList.contains('correct')) {
-          btn.classList.add('correctBtn')
+          btn.children[0].classList.add('correctBtn')
           btn.classList.remove('correct')
         } else {
-          btn.classList.add('wrongBtn')
+          btn.children[0].classList.add('wrongBtn')
           btn.classList.remove('wrong')
         }
       })
