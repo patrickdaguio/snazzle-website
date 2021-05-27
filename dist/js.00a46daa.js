@@ -6307,6 +6307,11 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         setTimer(parseInt(values[0][1]));
         randomAnswers();
         findCorrectAnswer();
+
+        if (questionIndex === quiz[quizTitleIndex].questions.length) {
+          nextBtn.textContent = 'FINISH';
+          nextBtn.href = '/html/results.html';
+        }
       }
 
       function displayTotal() {
@@ -6320,6 +6325,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           answer.addEventListener('click', function (e) {
             var selectedAnswer = e.target.parentNode.parentNode.children[0];
             var selectedAnswerWrapper = e.target.parentNode.parentNode;
+            answerGiven = true;
 
             if (selectedAnswer.classList.contains('correctBtn')) {
               selectedAnswerWrapper.classList.add('correct');
@@ -6345,7 +6351,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
             }
 
             clearInterval(timerId);
-            countdownCircle.style.animationPlayState = 'paused';
+            countdownCircle.classList.remove('resetTimer');
           });
         });
       }
@@ -6376,35 +6382,65 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       var timerId;
 
       function setTimer(time) {
+        countdownCircle.classList.add('resetTimer');
         var countdown = time;
-        countdownCircle.style.animationPlayState = 'play';
         countdownCircle.style.animationDuration = "".concat(countdown, "s");
         timerId = setInterval(function () {
           countdown = --countdown;
           questionTimer.textContent = countdown;
-          if (countdown === 0) clearInterval(timerId);
+
+          if (countdown === 0) {
+            clearInterval(timerId);
+            countdownCircle.classList.remove('resetTimer');
+            var itemChildren = document.querySelectorAll('.quiz-play__answer__text');
+
+            for (var i = 0; i < itemChildren.length; i++) {
+              if (itemChildren[i].classList.contains('correctBtn')) {
+                itemChildren[i].parentNode.classList.add('correct');
+              }
+            }
+
+            for (var _i2 = 0; _i2 < itemChildren.length; _i2++) {
+              itemChildren[_i2].classList.remove('correctBtn');
+
+              itemChildren[_i2].classList.remove('wrongBtn');
+            }
+          }
         }, 1000);
       }
 
-      var questionIndex = 0;
+      var questionIndex = 1;
+      var answerGiven = false;
+      var nxtBtnLink = document.querySelector('.nxtBtnLink');
 
-      function nxtQuestion() {
-        var values = [];
-
-        for (var i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
-          values.push(Object.values(quiz[quizTitleIndex].questions[i]));
+      function nxtQuestion(e) {
+        if (e.target.textContent === 'FINISH') {
+          console.log('done');
+          nxtBtnLink.href = "/html/results.html";
         }
 
-        currentQuestion.textContent = values[questionIndex][0];
-        questionTimer.textContent = values[questionIndex][1];
-        correctBtn.textContent = values[questionIndex][2];
-        wrongOneBtn.textContent = values[questionIndex][3];
-        wrongTwoBtn.textContent = values[questionIndex][4];
-        wrongThreeBtn.textContent = values[questionIndex][5];
-        setTimer(parseInt(values[questionIndex][1]));
-        randomAnswers();
-        removeColor();
-        questionIndex++;
+        if (answerGiven) {
+          countdownCircle.classList.remove('resetTimer');
+          var values = [];
+
+          for (var i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
+            values.push(Object.values(quiz[quizTitleIndex].questions[i]));
+          }
+
+          currentQuestion.textContent = values[questionIndex][0];
+          questionTimer.textContent = values[questionIndex][1];
+          correctBtn.textContent = values[questionIndex][2];
+          wrongOneBtn.textContent = values[questionIndex][3];
+          wrongTwoBtn.textContent = values[questionIndex][4];
+          wrongThreeBtn.textContent = values[questionIndex][5];
+          setTimer(parseInt(values[questionIndex][1]));
+          randomAnswers();
+          removeColor();
+          questionIndex++;
+        }
+
+        answerGiven = false;
+        if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH';else nextBtn.textContent = 'NEXT';
       }
     }
   }]);
@@ -6498,7 +6534,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "52499" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51359" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

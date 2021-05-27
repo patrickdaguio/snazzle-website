@@ -228,6 +228,11 @@ export class QuizBank extends Highway.Renderer {
       setTimer(parseInt(values[0][1]))
       randomAnswers()
       findCorrectAnswer()
+
+      if (questionIndex === quiz[quizTitleIndex].questions.length) {
+        nextBtn.textContent = 'FINISH'
+        nextBtn.href = '/html/results.html'
+      }
     }
 
     function displayTotal() {
@@ -241,6 +246,7 @@ export class QuizBank extends Highway.Renderer {
         answer.addEventListener('click', e => {
           const selectedAnswer = e.target.parentNode.parentNode.children[0]
           const selectedAnswerWrapper = e.target.parentNode.parentNode
+          answerGiven = true
           if (selectedAnswer.classList.contains('correctBtn')) {
             selectedAnswerWrapper.classList.add('correct')
             displayTotal()
@@ -259,7 +265,7 @@ export class QuizBank extends Highway.Renderer {
               itemChildren[i].classList.remove('wrongBtn')
             }
             clearInterval(timerId)
-            countdownCircle.style.animationPlayState = 'paused'
+            countdownCircle.classList.remove('resetTimer')
         })
       })
     }
@@ -290,37 +296,66 @@ export class QuizBank extends Highway.Renderer {
 
     function setTimer(time) {
 
+      countdownCircle.classList.add('resetTimer')
+
       let countdown = time
-      countdownCircle.style.animationPlayState = 'play'
       countdownCircle.style.animationDuration = `${countdown}s`
       
       timerId = setInterval(function() {
         countdown = --countdown
         questionTimer.textContent = countdown
-        if (countdown === 0) clearInterval(timerId)
-        }, 1000);
+        if (countdown === 0) {
+          clearInterval(timerId)
+          countdownCircle.classList.remove('resetTimer')
+          
+          let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
+          for (let i = 0; i < itemChildren.length; i++) {
+            if (itemChildren[i].classList.contains('correctBtn')) { 
+              itemChildren[i].parentNode.classList.add('correct')
+            }
+          }
+          for (let i = 0; i < itemChildren.length; i++) {
+            itemChildren[i].classList.remove('correctBtn')
+            itemChildren[i].classList.remove('wrongBtn')
+          }
+        }
+      }, 1000)
     }
 
-    let questionIndex = 0
+    let questionIndex = 1
 
-    function nxtQuestion() {
-      let values = []
-      for (let i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
-        values.push(Object.values(quiz[quizTitleIndex].questions[i]))
+    let answerGiven = false
+
+    const nxtBtnLink = document.querySelector('.nxtBtnLink')
+
+    function nxtQuestion(e) {
+
+      if (e.target.textContent === 'FINISH') {
+        console.log('done')
+        nxtBtnLink.href = "/html/results.html"
+      } 
+      if (answerGiven) {
+        countdownCircle.classList.remove('resetTimer')
+        let values = []
+        for (let i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
+          values.push(Object.values(quiz[quizTitleIndex].questions[i]))
+        }
+
+        currentQuestion.textContent = values[questionIndex][0]
+        questionTimer.textContent = values[questionIndex][1]
+        correctBtn.textContent = values[questionIndex][2]
+        wrongOneBtn.textContent = values[questionIndex][3]
+        wrongTwoBtn.textContent = values[questionIndex][4]
+        wrongThreeBtn.textContent = values[questionIndex][5]
+
+        setTimer(parseInt(values[questionIndex][1]))
+        randomAnswers()
+        removeColor()
+        questionIndex++
       }
-
-      currentQuestion.textContent = values[questionIndex][0]
-      questionTimer.textContent = values[questionIndex][1]
-      correctBtn.textContent = values[questionIndex][2]
-      wrongOneBtn.textContent = values[questionIndex][3]
-      wrongTwoBtn.textContent = values[questionIndex][4]
-      wrongThreeBtn.textContent = values[questionIndex][5]
-
-      setTimer(parseInt(values[questionIndex][1]))
-      randomAnswers()
-      removeColor()
-
-      questionIndex++
+      answerGiven = false
+      if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH'
+      else nextBtn.textContent = 'NEXT'
     }
   }
 }

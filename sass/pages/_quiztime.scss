@@ -66,7 +66,6 @@
       stroke-width: 2px;
       stroke: white;
       fill: none;
-      animation: countdown 10s linear infinite forwards;
     }
   }
   &__question {
@@ -210,4 +209,8 @@
       color: none;
     }
   }
+}
+
+.resetTimer {
+  animation: countdown 10s linear infinite forwards;
 }
