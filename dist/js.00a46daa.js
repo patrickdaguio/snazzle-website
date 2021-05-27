@@ -6221,6 +6221,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       var wrongThreeBtn = document.querySelector('.wrongThreeBtn');
       var countdownCircle = document.getElementById('foo');
       var nextBtn = document.querySelector('.quiz-play__btn');
+      var nxtBtnLink = document.querySelector('.nxtBtnLink');
       var quiz;
       if (localStorage.getItem('quiz') === null) quiz = [];else quiz = JSON.parse(localStorage.getItem('quiz'));
 
@@ -6307,11 +6308,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         setTimer(parseInt(values[0][1]));
         randomAnswers();
         findCorrectAnswer();
-
-        if (questionIndex === quiz[quizTitleIndex].questions.length) {
-          nextBtn.textContent = 'FINISH';
-          nextBtn.href = '/html/results.html';
-        }
+        checkLastQuestion();
       }
 
       function displayTotal() {
@@ -6392,6 +6389,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           if (countdown === 0) {
             clearInterval(timerId);
             countdownCircle.classList.remove('resetTimer');
+            answerGiven = true;
             var itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
             for (var i = 0; i < itemChildren.length; i++) {
@@ -6411,15 +6409,17 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       var questionIndex = 1;
       var answerGiven = false;
-      var nxtBtnLink = document.querySelector('.nxtBtnLink');
 
-      function nxtQuestion(e) {
-        if (e.target.textContent === 'FINISH') {
-          console.log('done');
-          nxtBtnLink.href = "/html/results.html";
-        }
+      function checkLastQuestion() {
+        if (questionIndex === quiz[quizTitleIndex].questions.length) {
+          nextBtn.textContent = 'FINISH';
+          nxtBtnLink.href = '/html/results.html';
+        } else nextBtn.textContent = 'NEXT';
+      }
 
+      function nxtQuestion() {
         if (answerGiven) {
+          checkLastQuestion();
           countdownCircle.classList.remove('resetTimer');
           var values = [];
 
@@ -6440,7 +6440,6 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         }
 
         answerGiven = false;
-        if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH';else nextBtn.textContent = 'NEXT';
       }
     }
   }]);

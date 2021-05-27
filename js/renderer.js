@@ -137,6 +137,7 @@ export class QuizBank extends Highway.Renderer {
     const wrongThreeBtn = document.querySelector('.wrongThreeBtn')
     const countdownCircle = document.getElementById('foo')
     const nextBtn = document.querySelector('.quiz-play__btn')
+    const nxtBtnLink = document.querySelector('.nxtBtnLink')
 
     let quiz
     if (localStorage.getItem('quiz') === null) quiz = []
@@ -228,11 +229,7 @@ export class QuizBank extends Highway.Renderer {
       setTimer(parseInt(values[0][1]))
       randomAnswers()
       findCorrectAnswer()
-
-      if (questionIndex === quiz[quizTitleIndex].questions.length) {
-        nextBtn.textContent = 'FINISH'
-        nextBtn.href = '/html/results.html'
-      }
+      checkLastQuestion()
     }
 
     function displayTotal() {
@@ -307,6 +304,7 @@ export class QuizBank extends Highway.Renderer {
         if (countdown === 0) {
           clearInterval(timerId)
           countdownCircle.classList.remove('resetTimer')
+          answerGiven = true
           
           let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
           for (let i = 0; i < itemChildren.length; i++) {
@@ -326,15 +324,18 @@ export class QuizBank extends Highway.Renderer {
 
     let answerGiven = false
 
-    const nxtBtnLink = document.querySelector('.nxtBtnLink')
+    function checkLastQuestion() {
+      if (questionIndex === quiz[quizTitleIndex].questions.length) {
+        nextBtn.textContent = 'FINISH'
+        nxtBtnLink.href = '/html/results.html'
+      }
+      else nextBtn.textContent = 'NEXT'
+    }
 
-    function nxtQuestion(e) {
+    function nxtQuestion() {
 
-      if (e.target.textContent === 'FINISH') {
-        console.log('done')
-        nxtBtnLink.href = "/html/results.html"
-      } 
       if (answerGiven) {
+        checkLastQuestion()
         countdownCircle.classList.remove('resetTimer')
         let values = []
         for (let i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
@@ -354,8 +355,6 @@ export class QuizBank extends Highway.Renderer {
         questionIndex++
       }
       answerGiven = false
-      if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH'
-      else nextBtn.textContent = 'NEXT'
     }
   }
 }
