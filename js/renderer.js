@@ -6,6 +6,7 @@ import Highway from '@dogstudio/highway'
 
 export class QuizMaker extends Highway.Renderer {
   onEnterCompleted() {
+    // DOM Elemnents
     const quizTitle = document.querySelector('.quiz-create__title')
     const quizQuestion = document.querySelector('.quiz-create__question')
     const quizQuestionTime = document.querySelector('.quiz-create__time')
@@ -20,6 +21,7 @@ export class QuizMaker extends Highway.Renderer {
     const errorMsgInput= document.querySelector('.quiz-create__error--input')
     const setQuizTitle = document.querySelector('.quiz-create__btn--set')
 
+    // Event listeners
     addQuestionBtn.addEventListener('click', addQuestion)
     setQuizTitle.addEventListener('click', checkTitle)
     quizTitle.addEventListener('change', duplicateQuizWarning)
@@ -48,7 +50,7 @@ export class QuizMaker extends Highway.Renderer {
       quizQuestionTime.value = ''
     }
 
-    // Checks if title or any has been inputted before finishing quiz
+    // Checks if title and inputs been filled in before finishing/submitting quiz
     function finishQuiz() {
       let index = quiz.map(item => item.title).indexOf(quizTitle.value)
       if (quiz[index].questions.length === 0) {
@@ -118,12 +120,16 @@ export class QuizMaker extends Highway.Renderer {
   }
 }
 
-// ==========
-// QUIZ BANK
-// ==========
+// =====================
+// QUIZ BANK & QUIZ TIME
+// ======================
 
 export class QuizBank extends Highway.Renderer {
+  // =========
+  // QUIZ BANK
+  // =========
   onEnter() {
+    // DOM Elements
     const quizBank = document.querySelector('.quiz-bank')
     const quizTime = document.querySelector('.quiz-play')
     const quizBankWrapper = document.querySelector('.quiz-bank__quiz-wrapper')
@@ -137,12 +143,30 @@ export class QuizBank extends Highway.Renderer {
     const wrongThreeBtn = document.querySelector('.wrongThreeBtn')
     const countdownCircle = document.getElementById('foo')
     const nextBtn = document.querySelector('.quiz-play__btn')
-    const nxtBtnLink = document.querySelector('.nxtBtnLink')
 
+    /* Global Variables */
+
+    // Detects quiz chosen from LocalStorage
+    let quizTitleIndex
+
+    // Tracks users correct answers
+    let totalAnswersCorrect = 0
+
+    // Stores TimeInterval
+    let timerId
+
+    // Tracks where the user is in the quiz
+    let questionIndex = 1
+
+    // Detects if user has given an answer or not
+    let answerGiven = false
+
+    // Fetches quiz object from LocalStorage
     let quiz
     if (localStorage.getItem('quiz') === null) quiz = []
     else quiz = JSON.parse(localStorage.getItem('quiz'))
 
+    // Fetches Quiz titles from LocalStorage and displays on DOM
     function getQuizTitle() {
 
       quiz.forEach(title => {
@@ -168,15 +192,14 @@ export class QuizBank extends Highway.Renderer {
         const trashButton = document.createElement('i')
         trashButton.classList.add('fa-trash-alt', 'fas')
         trashButtonContainer.appendChild(trashButton)
-
+        // Appends to Quiz Bank
         quizBankWrapper.appendChild(titleDiv)
       })
     }
 
     getQuizTitle()
 
-    let quizTitleIndex
-
+    // Functionality to display chosen Quiz to DOM 
     const selectedQuiz = document.querySelectorAll('.fa-play-circle')
     selectedQuiz.forEach((circle, i) => circle.addEventListener('click', function() {
       quizTitleIndex = i
@@ -184,6 +207,7 @@ export class QuizBank extends Highway.Renderer {
       quizTime.style.display = 'block'
       startQuiz()
     }))
+    // Deletes selected Quiz from DOM 
     const trashQuiz = document.querySelectorAll('.fa-trash-alt')
     trashQuiz.forEach(circle => {
       circle.addEventListener('click', e => {
@@ -195,6 +219,7 @@ export class QuizBank extends Highway.Renderer {
       })
     })
 
+    // Removes selected Quiz from LocalStorage
     function removeQuiz(title) {
       quiz.forEach((quizTitle, i) => {
         if (quizTitle.title === title) {
@@ -205,15 +230,15 @@ export class QuizBank extends Highway.Renderer {
     }
 
     // ==========
-    // QUIZ PLAY
+    // QUIZ TIME
     // ==========
 
     nextBtn.addEventListener('click', nxtQuestion)
 
-    let totalAnswersCorrect = 0
-
+    // Displays first question of the quiz 
     function startQuiz() {
 
+      // Stores questions of quiz object to array so it can be easily accessed
       let values = []
       for (let i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
         values.push(Object.values(quiz[quizTitleIndex].questions[i]))
@@ -232,11 +257,13 @@ export class QuizBank extends Highway.Renderer {
       checkLastQuestion()
     }
 
+    // Adds correct answer to total and displays it
     function displayTotal() {
       totalAnswersCorrect++
       answersTally.textContent = `${totalAnswersCorrect}`
     }
 
+    // Checks if user's answer is right/wrong and displays right answer if wrong is chosen 
     function findCorrectAnswer() {
       answersTally.textContent = `${totalAnswersCorrect}`
       questionAnswers.forEach(answer => {
@@ -244,9 +271,11 @@ export class QuizBank extends Highway.Renderer {
           const selectedAnswer = e.target.parentNode.parentNode.children[0]
           const selectedAnswerWrapper = e.target.parentNode.parentNode
           answerGiven = true
+          // Right answer chosen - adds to total corect answers
           if (selectedAnswer.classList.contains('correctBtn')) {
             selectedAnswerWrapper.classList.add('correct')
             displayTotal()
+          // Wrong answer chosen - finds correct answer and reveal it
           } else if (selectedAnswer.classList.contains('wrongBtn')) {
             selectedAnswerWrapper.classList.add('wrong')
             let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
@@ -256,17 +285,20 @@ export class QuizBank extends Highway.Renderer {
                 }
               }
             }
+            // Prevents user from receiving multiple correct answers 
             let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
             for (let i = 0; i < itemChildren.length; i++) {
               itemChildren[i].classList.remove('correctBtn')
               itemChildren[i].classList.remove('wrongBtn')
             }
+            // Stops timer
             clearInterval(timerId)
             countdownCircle.classList.remove('resetTimer')
         })
       })
     }
-          
+
+    // Randomises location of answers for every question
     function randomAnswers() {
       const cta = document.querySelector('.quiz-play__answers');
       let number = 9
@@ -276,6 +308,7 @@ export class QuizBank extends Highway.Renderer {
       }
     }
 
+    // Removes background color of right and wrong answer when new question comes
     function removeColor() {
       const quizBoxes = document.querySelectorAll('.quiz-play__answer')
       quizBoxes.forEach(btn => {
@@ -289,8 +322,7 @@ export class QuizBank extends Highway.Renderer {
       })
     }
 
-    let timerId
-
+    // Countdown which sets timer for each question
     function setTimer(time) {
 
       countdownCircle.classList.add('resetTimer')
@@ -302,16 +334,19 @@ export class QuizBank extends Highway.Renderer {
         countdown = --countdown
         questionTimer.textContent = countdown
         if (countdown === 0) {
+          // When timer hits 0, stop timer
           clearInterval(timerId)
           countdownCircle.classList.remove('resetTimer')
           answerGiven = true
           
+          // Finds correct wrong for user to see
           let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
           for (let i = 0; i < itemChildren.length; i++) {
             if (itemChildren[i].classList.contains('correctBtn')) { 
               itemChildren[i].parentNode.classList.add('correct')
             }
           }
+          // Removes classes that gives user a correct answer
           for (let i = 0; i < itemChildren.length; i++) {
             itemChildren[i].classList.remove('correctBtn')
             itemChildren[i].classList.remove('wrongBtn')
@@ -320,28 +355,22 @@ export class QuizBank extends Highway.Renderer {
       }, 1000)
     }
 
-    let questionIndex = 1
-
-    let answerGiven = false
-
-    function checkLastQuestion() {
-      if (questionIndex === quiz[quizTitleIndex].questions.length) {
-        nextBtn.textContent = 'FINISH'
-        nxtBtnLink.href = '/html/results.html'
-      }
-      else nextBtn.textContent = 'NEXT'
-    }
-
+    // Shows question/answer/timer for next question
     function nxtQuestion() {
-
+      if (nextBtn.innerText === "FINISH") {
+        showResults()
+        quizResults.style.display = "flex"
+        quizTime.style.display = "none"  
+        questionIndex = 0
+        totalAnswersCorrect = 0   
+      }
+      // Next question will only show if user has chosen an answer or timer hits 0
       if (answerGiven) {
-        checkLastQuestion()
         countdownCircle.classList.remove('resetTimer')
         let values = []
         for (let i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
           values.push(Object.values(quiz[quizTitleIndex].questions[i]))
         }
-
         currentQuestion.textContent = values[questionIndex][0]
         questionTimer.textContent = values[questionIndex][1]
         correctBtn.textContent = values[questionIndex][2]
@@ -355,6 +384,37 @@ export class QuizBank extends Highway.Renderer {
         questionIndex++
       }
       answerGiven = false
+      checkLastQuestion()
+    }
+    
+    // Checks if quiz is on last question 
+    function checkLastQuestion() {
+      if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH'
+      else nextBtn.textContent = 'NEXT'
+    }
+
+    // ============
+    // QUIZ RESULTS
+    // ============
+    const quizResults = document.querySelector('.quiz-results')
+    const quizCorrect = document.querySelector('.quiz-results__text__correct')
+    const quizIncorrect = document.querySelector('.quiz-results__text__incorrect')
+    const quizScore = document.querySelector('.quiz-results__result__score')
+    const quizRestart = document.querySelector('.quiz-results__btn--restart')
+
+    function showResults() {
+      let result = Math.round((totalAnswersCorrect/quiz[quizTitleIndex].questions.length) * 100);
+      quizCorrect.textContent = totalAnswersCorrect
+      quizIncorrect.textContent = quiz[quizTitleIndex].questions.length
+      quizScore.textContent = result
+    }
+
+    quizRestart.addEventListener('click', restartQuiz)
+
+    function restartQuiz() {
+      quizResults.style.display = "none"
+      quizTime.style.display = "block"  
+      startQuiz()
     }
   }
 }

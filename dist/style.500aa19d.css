@@ -1044,7 +1044,9 @@ body {
   border-radius: 2em;
   padding: 2em 3em 3em;
   margin-top: -3em;
+  display: none;
   color: white;
+  animation: slideIn 1s;
 }
 @media (max-width: 1050px) {
   .quiz-results {

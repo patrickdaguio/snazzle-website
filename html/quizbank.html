@@ -29,10 +29,12 @@
         <main class="main" data-router-wrapper>
             <div class="content-wrapper" data-router-view="bank">
                 <div class="quiz-hello">
+
                     <section class="quiz quiz-bank">
                         <h1 class="heading quiz-bank__heading">Quiz Bank</h1>
                         <div class="quiz-bank__quiz-wrapper"></div>
                     </section>
+
                     <section class="quiz quiz-play">
                         <div class="quiz-play__top">
                             <div class="quiz-play__countdown">
@@ -64,8 +66,39 @@
                                 </div>
                             </div>
                         </div>
-                        <a class="nxtBtnLink" href="#"><button class="btn quiz-play__btn"">Next</button></a>
+                        <button class="btn quiz-play__btn"">Next</button>
                         <p class="quiz-play__tally">Correct Answers: <span class="quiz-play__correct">0</span></p>
+                    </section>
+
+                    <section class="quiz quiz-results">
+                        <h1 class="heading quiz-results__heading">Quiz Results</h1>
+                        <p class="quiz-results__text">Total correct answers:</p>
+                        <p class="quiz-results__text quiz-results__text--total">
+                            <span class="quiz-results__text__correct">6</span> out of 
+                            <span class="quiz-results__text__incorrect">10</span> questions</span>
+                        </p>
+                        <div class="quiz-results__result">
+                            <ul class='quiz-results__result__circle'>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                                <li class="circle-animation-4"></li>
+                            </ul>
+                            <h3 class="quiz-results__result__desc">Final Score:</h3>
+                            <div class="quiz-results__result__wrapper">
+                                <h1 class="quiz-results__result__score">60</h1>
+                            </div>
+                        </div>
+                        <div class="quiz-results__btn-wrapper">
+                            <button class="btn quiz-results__btn quiz-results__btn--restart">Restart</button>
+                            <a href="/index.html"><button class="btn quiz-results__btn quiz-results__btn--home">Home</button></a>
+                        </div>
                     </section>
                 </div>
             </div>

@@ -6,7 +6,9 @@
   border-radius: 2em;
   padding: 2em 3em 3em;
   margin-top: -3em;
+  display: none;
   color: white;
+  animation: slideIn 1s;
   @include media("<=1050px") {
     margin-top: 1.5em;
   }

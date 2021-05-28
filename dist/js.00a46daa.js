@@ -6059,6 +6059,7 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
   _createClass(QuizMaker, [{
     key: "onEnterCompleted",
     value: function onEnterCompleted() {
+      // DOM Elemnents
       var quizTitle = document.querySelector('.quiz-create__title');
       var quizQuestion = document.querySelector('.quiz-create__question');
       var quizQuestionTime = document.querySelector('.quiz-create__time');
@@ -6071,7 +6072,8 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
       var endQuiz = document.querySelector('.endQuiz');
       var errorMsgTitle = document.querySelector('.quiz-create__error--title');
       var errorMsgInput = document.querySelector('.quiz-create__error--input');
-      var setQuizTitle = document.querySelector('.quiz-create__btn--set');
+      var setQuizTitle = document.querySelector('.quiz-create__btn--set'); // Event listeners
+
       addQuestionBtn.addEventListener('click', addQuestion);
       setQuizTitle.addEventListener('click', checkTitle);
       quizTitle.addEventListener('change', duplicateQuizWarning);
@@ -6097,7 +6099,7 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
         wrongTwoAnswer.value = '';
         wrongThreeAnswer.value = '';
         quizQuestionTime.value = '';
-      } // Checks if title or any has been inputted before finishing quiz
+      } // Checks if title and inputs been filled in before finishing/submitting quiz
 
 
       function finishQuiz() {
@@ -6187,9 +6189,9 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
   }]);
 
   return QuizMaker;
-}(_highway.default.Renderer); // ==========
-// QUIZ BANK
-// ==========
+}(_highway.default.Renderer); // =====================
+// QUIZ BANK & QUIZ TIME
+// ======================
 
 
 exports.QuizMaker = QuizMaker;
@@ -6207,7 +6209,11 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
   _createClass(QuizBank, [{
     key: "onEnter",
-    value: function onEnter() {
+    value: // =========
+    // QUIZ BANK
+    // =========
+    function onEnter() {
+      // DOM Elements
       var quizBank = document.querySelector('.quiz-bank');
       var quizTime = document.querySelector('.quiz-play');
       var quizBankWrapper = document.querySelector('.quiz-bank__quiz-wrapper');
@@ -6221,9 +6227,21 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       var wrongThreeBtn = document.querySelector('.wrongThreeBtn');
       var countdownCircle = document.getElementById('foo');
       var nextBtn = document.querySelector('.quiz-play__btn');
-      var nxtBtnLink = document.querySelector('.nxtBtnLink');
+      /* Global Variables */
+      // Detects quiz chosen from LocalStorage
+
+      var quizTitleIndex; // Tracks users correct answers
+
+      var totalAnswersCorrect = 0; // Stores TimeInterval
+
+      var timerId; // Tracks where the user is in the quiz
+
+      var questionIndex = 1; // Detects if user has given an answer or not
+
+      var answerGiven = false; // Fetches quiz object from LocalStorage
+
       var quiz;
-      if (localStorage.getItem('quiz') === null) quiz = [];else quiz = JSON.parse(localStorage.getItem('quiz'));
+      if (localStorage.getItem('quiz') === null) quiz = [];else quiz = JSON.parse(localStorage.getItem('quiz')); // Fetches Quiz titles from LocalStorage and displays on DOM
 
       function getQuizTitle() {
         quiz.forEach(function (title) {
@@ -6248,13 +6266,14 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           titleDiv.appendChild(trashButtonContainer);
           var trashButton = document.createElement('i');
           trashButton.classList.add('fa-trash-alt', 'fas');
-          trashButtonContainer.appendChild(trashButton);
+          trashButtonContainer.appendChild(trashButton); // Appends to Quiz Bank
+
           quizBankWrapper.appendChild(titleDiv);
         });
       }
 
-      getQuizTitle();
-      var quizTitleIndex;
+      getQuizTitle(); // Functionality to display chosen Quiz to DOM 
+
       var selectedQuiz = document.querySelectorAll('.fa-play-circle');
       selectedQuiz.forEach(function (circle, i) {
         return circle.addEventListener('click', function () {
@@ -6263,7 +6282,8 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           quizTime.style.display = 'block';
           startQuiz();
         });
-      });
+      }); // Deletes selected Quiz from DOM 
+
       var trashQuiz = document.querySelectorAll('.fa-trash-alt');
       trashQuiz.forEach(function (circle) {
         circle.addEventListener('click', function (e) {
@@ -6275,7 +6295,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
             return deleteQuiz.remove();
           });
         });
-      });
+      }); // Removes selected Quiz from LocalStorage
 
       function removeQuiz(title) {
         quiz.forEach(function (quizTitle, i) {
@@ -6285,14 +6305,14 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         });
         localStorage.setItem('quiz', JSON.stringify(quiz));
       } // ==========
-      // QUIZ PLAY
+      // QUIZ TIME
       // ==========
 
 
-      nextBtn.addEventListener('click', nxtQuestion);
-      var totalAnswersCorrect = 0;
+      nextBtn.addEventListener('click', nxtQuestion); // Displays first question of the quiz 
 
       function startQuiz() {
+        // Stores questions of quiz object to array so it can be easily accessed
         var values = [];
 
         for (var i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
@@ -6309,12 +6329,14 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         randomAnswers();
         findCorrectAnswer();
         checkLastQuestion();
-      }
+      } // Adds correct answer to total and displays it
+
 
       function displayTotal() {
         totalAnswersCorrect++;
         answersTally.textContent = "".concat(totalAnswersCorrect);
-      }
+      } // Checks if user's answer is right/wrong and displays right answer if wrong is chosen 
+
 
       function findCorrectAnswer() {
         answersTally.textContent = "".concat(totalAnswersCorrect);
@@ -6322,11 +6344,11 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           answer.addEventListener('click', function (e) {
             var selectedAnswer = e.target.parentNode.parentNode.children[0];
             var selectedAnswerWrapper = e.target.parentNode.parentNode;
-            answerGiven = true;
+            answerGiven = true; // Right answer chosen - adds to total corect answers
 
             if (selectedAnswer.classList.contains('correctBtn')) {
               selectedAnswerWrapper.classList.add('correct');
-              displayTotal();
+              displayTotal(); // Wrong answer chosen - finds correct answer and reveal it
             } else if (selectedAnswer.classList.contains('wrongBtn')) {
               selectedAnswerWrapper.classList.add('wrong');
 
@@ -6337,7 +6359,8 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
                   _itemChildren[i].parentNode.classList.add('correct');
                 }
               }
-            }
+            } // Prevents user from receiving multiple correct answers 
+
 
             var itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
@@ -6345,13 +6368,15 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
               itemChildren[_i].classList.remove('correctBtn');
 
               itemChildren[_i].classList.remove('wrongBtn');
-            }
+            } // Stops timer
+
 
             clearInterval(timerId);
             countdownCircle.classList.remove('resetTimer');
           });
         });
-      }
+      } // Randomises location of answers for every question
+
 
       function randomAnswers() {
         var cta = document.querySelector('.quiz-play__answers');
@@ -6361,7 +6386,8 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           cta.appendChild(cta.children[Math.random() * i | 0]).classList.add("quiz-play__answer--".concat(number));
           number++;
         }
-      }
+      } // Removes background color of right and wrong answer when new question comes
+
 
       function removeColor() {
         var quizBoxes = document.querySelectorAll('.quiz-play__answer');
@@ -6374,9 +6400,8 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
             btn.classList.remove('wrong');
           }
         });
-      }
+      } // Countdown which sets timer for each question
 
-      var timerId;
 
       function setTimer(time) {
         countdownCircle.classList.add('resetTimer');
@@ -6387,16 +6412,19 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           questionTimer.textContent = countdown;
 
           if (countdown === 0) {
+            // When timer hits 0, stop timer
             clearInterval(timerId);
             countdownCircle.classList.remove('resetTimer');
-            answerGiven = true;
+            answerGiven = true; // Finds correct wrong for user to see
+
             var itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
             for (var i = 0; i < itemChildren.length; i++) {
               if (itemChildren[i].classList.contains('correctBtn')) {
                 itemChildren[i].parentNode.classList.add('correct');
               }
-            }
+            } // Removes classes that gives user a correct answer
+
 
             for (var _i2 = 0; _i2 < itemChildren.length; _i2++) {
               itemChildren[_i2].classList.remove('correctBtn');
@@ -6405,21 +6433,20 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
             }
           }
         }, 1000);
-      }
+      } // Shows question/answer/timer for next question
 
-      var questionIndex = 1;
-      var answerGiven = false;
-
-      function checkLastQuestion() {
-        if (questionIndex === quiz[quizTitleIndex].questions.length) {
-          nextBtn.textContent = 'FINISH';
-          nxtBtnLink.href = '/html/results.html';
-        } else nextBtn.textContent = 'NEXT';
-      }
 
       function nxtQuestion() {
+        if (nextBtn.innerText === "FINISH") {
+          showResults();
+          quizResults.style.display = "flex";
+          quizTime.style.display = "none";
+          questionIndex = 0;
+          totalAnswersCorrect = 0;
+        } // Next question will only show if user has chosen an answer or timer hits 0
+
+
         if (answerGiven) {
-          checkLastQuestion();
           countdownCircle.classList.remove('resetTimer');
           var values = [];
 
@@ -6440,6 +6467,36 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         }
 
         answerGiven = false;
+        checkLastQuestion();
+      } // Checks if quiz is on last question 
+
+
+      function checkLastQuestion() {
+        if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH';else nextBtn.textContent = 'NEXT';
+      } // ============
+      // QUIZ RESULTS
+      // ============
+
+
+      var quizResults = document.querySelector('.quiz-results');
+      var quizCorrect = document.querySelector('.quiz-results__text__correct');
+      var quizIncorrect = document.querySelector('.quiz-results__text__incorrect');
+      var quizScore = document.querySelector('.quiz-results__result__score');
+      var quizRestart = document.querySelector('.quiz-results__btn--restart');
+
+      function showResults() {
+        var result = Math.round(totalAnswersCorrect / quiz[quizTitleIndex].questions.length * 100);
+        quizCorrect.textContent = totalAnswersCorrect;
+        quizIncorrect.textContent = quiz[quizTitleIndex].questions.length;
+        quizScore.textContent = result;
+      }
+
+      quizRestart.addEventListener('click', restartQuiz);
+
+      function restartQuiz() {
+        quizResults.style.display = "none";
+        quizTime.style.display = "block";
+        startQuiz();
       }
     }
   }]);
@@ -6533,7 +6590,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51359" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51035" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
