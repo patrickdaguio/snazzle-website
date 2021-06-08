@@ -6238,7 +6238,9 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       var questionIndex = 1; // Detects if user has given an answer or not
 
-      var answerGiven = false; // Fetches quiz object from LocalStorage
+      var answerGiven = false; // Provides the number for the questions
+
+      var questionNumber = 9; // Fetches quiz object from LocalStorage
 
       var quiz;
       if (localStorage.getItem('quiz') === null) quiz = [];else quiz = JSON.parse(localStorage.getItem('quiz')); // Fetches Quiz titles from LocalStorage and displays on DOM
@@ -6380,12 +6382,14 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       function randomAnswers() {
         var cta = document.querySelector('.quiz-play__answers');
-        var number = 9;
 
         for (var i = cta.children.length; i >= 0; i--) {
-          cta.appendChild(cta.children[Math.random() * i | 0]).classList.add("quiz-play__answer--".concat(number));
-          number++;
+          cta.appendChild(cta.children[Math.random() * i | 0]).classList.add("quiz-play__answer--".concat(questionNumber));
+          questionNumber++;
+          console.log(i);
         }
+
+        if (questionNumber === 13) questionNumber = 9;
       } // Removes background color of right and wrong answer when new question comes
 
 
@@ -6437,16 +6441,17 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
 
       function nxtQuestion() {
-        if (nextBtn.innerText === "FINISH") {
-          showResults();
-          quizResults.style.display = "flex";
-          quizTime.style.display = "none";
-          questionIndex = 0;
-          totalAnswersCorrect = 0;
-        } // Next question will only show if user has chosen an answer or timer hits 0
-
-
+        // Next question will only show if user has chosen an answer or timer hits 0
         if (answerGiven) {
+          if (nextBtn.innerText === "FINISH") {
+            showResults();
+            countdownCircle.classList.remove('resetTimer');
+            quizResults.style.display = "flex";
+            quizTime.style.display = "none";
+            questionIndex = 0;
+            totalAnswersCorrect = 0;
+          }
+
           countdownCircle.classList.remove('resetTimer');
           var values = [];
 
@@ -6496,6 +6501,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       function restartQuiz() {
         quizResults.style.display = "none";
         quizTime.style.display = "block";
+        clearInterval(timerId);
         startQuiz();
       }
     }
@@ -6590,7 +6596,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51035" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54801" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

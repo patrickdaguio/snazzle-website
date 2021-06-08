@@ -161,6 +161,9 @@ export class QuizBank extends Highway.Renderer {
     // Detects if user has given an answer or not
     let answerGiven = false
 
+    // Provides the number for the questions
+    let questionNumber = 9
+
     // Fetches quiz object from LocalStorage
     let quiz
     if (localStorage.getItem('quiz') === null) quiz = []
@@ -301,11 +304,13 @@ export class QuizBank extends Highway.Renderer {
     // Randomises location of answers for every question
     function randomAnswers() {
       const cta = document.querySelector('.quiz-play__answers');
-      let number = 9
+
       for (let i = cta.children.length; i >= 0; i--) {
-        cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${number}`);
-        number++
+        cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${questionNumber}`);
+        questionNumber++
+        console.log(i)
       }
+      if (questionNumber === 13) questionNumber = 9
     }
 
     // Removes background color of right and wrong answer when new question comes
@@ -357,15 +362,17 @@ export class QuizBank extends Highway.Renderer {
 
     // Shows question/answer/timer for next question
     function nxtQuestion() {
-      if (nextBtn.innerText === "FINISH") {
-        showResults()
-        quizResults.style.display = "flex"
-        quizTime.style.display = "none"  
-        questionIndex = 0
-        totalAnswersCorrect = 0   
-      }
+
       // Next question will only show if user has chosen an answer or timer hits 0
       if (answerGiven) {
+        if (nextBtn.innerText === "FINISH") {
+          showResults()
+          countdownCircle.classList.remove('resetTimer')
+          quizResults.style.display = "flex"
+          quizTime.style.display = "none"  
+          questionIndex = 0
+          totalAnswersCorrect = 0   
+        }
         countdownCircle.classList.remove('resetTimer')
         let values = []
         for (let i = 0; i < quiz[quizTitleIndex].questions.length; i++) {
@@ -414,6 +421,7 @@ export class QuizBank extends Highway.Renderer {
     function restartQuiz() {
       quizResults.style.display = "none"
       quizTime.style.display = "block"  
+      clearInterval(timerId)
       startQuiz()
     }
   }
