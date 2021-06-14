@@ -6242,9 +6242,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       var questionIndex = 1; // Detects if user has given an answer or not
 
-      var answerGiven = false; // Provides the number for the questions
-
-      var questionNumber123 = 9; // Fetches quiz object from LocalStorage
+      var answerGiven = false; // Fetches quiz object from LocalStorage
 
       var quiz;
       if (localStorage.getItem('quiz') === null) quiz = [];else quiz = JSON.parse(localStorage.getItem('quiz')); // Fetches Quiz titles from LocalStorage and displays on DOM
@@ -6347,7 +6345,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       function findCorrectAnswer() {
         answersTally.textContent = "".concat(totalAnswersCorrect);
-        questionAnswers.forEach(function (answer) {
+        questionAnswers.forEach(function (answer, i) {
           answer.addEventListener('click', function (e) {
             var selectedAnswer = e.target.parentNode.parentNode.children[0];
             var selectedAnswerWrapper = e.target.parentNode.parentNode;
@@ -6361,9 +6359,9 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
               var _itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
-              for (var i = 0; i < _itemChildren.length; i++) {
-                if (_itemChildren[i].classList.contains('correctBtn')) {
-                  _itemChildren[i].parentNode.classList.add('correct');
+              for (var _i = 0; _i < _itemChildren.length; _i++) {
+                if (_itemChildren[_i].classList.contains('correctBtn')) {
+                  _itemChildren[_i].parentNode.classList.add('correct');
                 }
               }
             } // Prevents user from receiving multiple correct answers 
@@ -6371,10 +6369,10 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
             var itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
-            for (var _i = 0; _i < itemChildren.length; _i++) {
-              itemChildren[_i].classList.remove('correctBtn');
+            for (var _i2 = 0; _i2 < itemChildren.length; _i2++) {
+              itemChildren[_i2].classList.remove('correctBtn');
 
-              itemChildren[_i].classList.remove('wrongBtn');
+              itemChildren[_i2].classList.remove('wrongBtn');
             } // Stops timer
 
 
@@ -6388,6 +6386,14 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       function randomAnswers() {
         var cta = document.querySelector('.quiz-play__answers');
         var questionNumber = 10;
+
+        for (var j = 0; j <= cta.children.length - 1; j++) {
+          if (cta.children[j].children[0].textContent == '') {
+            cta.children[j].style.display = 'none';
+          } else {
+            cta.children[j].style.display = 'flex';
+          }
+        }
 
         for (var i = cta.children.length - 1; i >= 0; i--) {
           cta.appendChild(cta.children[Math.random() * i | 0]).classList.add("quiz-play__answer--".concat(questionNumber));
@@ -6444,10 +6450,10 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
             } // Removes classes that gives user a correct answer
 
 
-            for (var _i2 = 0; _i2 < itemChildren.length; _i2++) {
-              itemChildren[_i2].classList.remove('correctBtn');
+            for (var _i3 = 0; _i3 < itemChildren.length; _i3++) {
+              itemChildren[_i3].classList.remove('correctBtn');
 
-              itemChildren[_i2].classList.remove('wrongBtn');
+              itemChildren[_i3].classList.remove('wrongBtn');
             }
           }
         }, 1000);
@@ -6611,7 +6617,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64225" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63000" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

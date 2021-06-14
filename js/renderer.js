@@ -164,9 +164,6 @@ export class QuizBank extends Highway.Renderer {
     // Detects if user has given an answer or not
     let answerGiven = false
 
-    // Provides the number for the questions
-    let questionNumber123 = 9
-
     // Fetches quiz object from LocalStorage
     let quiz
     if (localStorage.getItem('quiz') === null) quiz = []
@@ -273,7 +270,7 @@ export class QuizBank extends Highway.Renderer {
     // Checks if user's answer is right/wrong and displays right answer if wrong is chosen 
     function findCorrectAnswer() {
       answersTally.textContent = `${totalAnswersCorrect}`
-      questionAnswers.forEach(answer => {
+      questionAnswers.forEach((answer, i) => {
         answer.addEventListener('click', e => {
           const selectedAnswer = e.target.parentNode.parentNode.children[0]
           const selectedAnswerWrapper = e.target.parentNode.parentNode
@@ -301,7 +298,7 @@ export class QuizBank extends Highway.Renderer {
             // Stops timer
             clearInterval(timerId)
             countdownCircle.classList.remove('resetTimer')
-        })
+        }) 
       })
     }
 
@@ -309,6 +306,14 @@ export class QuizBank extends Highway.Renderer {
     function randomAnswers() {
       const cta = document.querySelector('.quiz-play__answers');
       let questionNumber = 10
+
+      for (let j = 0; j <= cta.children.length - 1; j++) {
+        if (cta.children[j].children[0].textContent == '') {
+          cta.children[j].style.display = 'none'
+        } else {
+          cta.children[j].style.display = 'flex'
+        }
+      }
 
       for (let i = cta.children.length - 1; i >= 0; i--) {
         cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${questionNumber}`);        
