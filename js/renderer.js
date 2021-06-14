@@ -143,6 +143,9 @@ export class QuizBank extends Highway.Renderer {
     const wrongThreeBtn = document.querySelector('.wrongThreeBtn')
     const countdownCircle = document.getElementById('foo')
     const nextBtn = document.querySelector('.quiz-play__btn')
+    const header = document.querySelector('.header')
+
+    header.addEventListener('click', () => clearInterval(timerId))
 
     /* Global Variables */
 
@@ -162,7 +165,7 @@ export class QuizBank extends Highway.Renderer {
     let answerGiven = false
 
     // Provides the number for the questions
-    let questionNumber = 9
+    let questionNumber123 = 9
 
     // Fetches quiz object from LocalStorage
     let quiz
@@ -255,6 +258,7 @@ export class QuizBank extends Highway.Renderer {
       wrongThreeBtn.textContent = values[0][5]
 
       setTimer(parseInt(values[0][1]))
+      removeQuestionNumber()
       randomAnswers()
       findCorrectAnswer()
       checkLastQuestion()
@@ -304,13 +308,23 @@ export class QuizBank extends Highway.Renderer {
     // Randomises location of answers for every question
     function randomAnswers() {
       const cta = document.querySelector('.quiz-play__answers');
+      let questionNumber = 10
 
-      for (let i = cta.children.length; i >= 0; i--) {
-        cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${questionNumber}`);
+      for (let i = cta.children.length - 1; i >= 0; i--) {
+        cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${questionNumber}`);        
         questionNumber++
-        console.log(i)
       }
-      if (questionNumber === 13) questionNumber = 9
+
+      if (questionNumber === 13) questionNumber = 10
+    }
+
+    function removeQuestionNumber () {
+      const cta = document.querySelector('.quiz-play__answers');
+      let regexHere = /quiz-play__answer--[0-9]+/g
+
+      for (let j = 0; j <= cta.children.length - 1; j++) {
+        cta.children[j].className = cta.children[j].className.replace(regexHere, '')
+      }
     }
 
     // Removes background color of right and wrong answer when new question comes
@@ -386,6 +400,7 @@ export class QuizBank extends Highway.Renderer {
         wrongThreeBtn.textContent = values[questionIndex][5]
 
         setTimer(parseInt(values[questionIndex][1]))
+        removeQuestionNumber()
         randomAnswers()
         removeColor()
         questionIndex++

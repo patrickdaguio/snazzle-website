@@ -6227,6 +6227,10 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       var wrongThreeBtn = document.querySelector('.wrongThreeBtn');
       var countdownCircle = document.getElementById('foo');
       var nextBtn = document.querySelector('.quiz-play__btn');
+      var header = document.querySelector('.header');
+      header.addEventListener('click', function () {
+        return clearInterval(timerId);
+      });
       /* Global Variables */
       // Detects quiz chosen from LocalStorage
 
@@ -6240,7 +6244,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       var answerGiven = false; // Provides the number for the questions
 
-      var questionNumber = 9; // Fetches quiz object from LocalStorage
+      var questionNumber123 = 9; // Fetches quiz object from LocalStorage
 
       var quiz;
       if (localStorage.getItem('quiz') === null) quiz = [];else quiz = JSON.parse(localStorage.getItem('quiz')); // Fetches Quiz titles from LocalStorage and displays on DOM
@@ -6328,6 +6332,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         wrongTwoBtn.textContent = values[0][4];
         wrongThreeBtn.textContent = values[0][5];
         setTimer(parseInt(values[0][1]));
+        removeQuestionNumber();
         randomAnswers();
         findCorrectAnswer();
         checkLastQuestion();
@@ -6382,14 +6387,23 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       function randomAnswers() {
         var cta = document.querySelector('.quiz-play__answers');
+        var questionNumber = 10;
 
-        for (var i = cta.children.length; i >= 0; i--) {
+        for (var i = cta.children.length - 1; i >= 0; i--) {
           cta.appendChild(cta.children[Math.random() * i | 0]).classList.add("quiz-play__answer--".concat(questionNumber));
           questionNumber++;
-          console.log(i);
         }
 
-        if (questionNumber === 13) questionNumber = 9;
+        if (questionNumber === 13) questionNumber = 10;
+      }
+
+      function removeQuestionNumber() {
+        var cta = document.querySelector('.quiz-play__answers');
+        var regexHere = /quiz-play__answer--[0-9]+/g;
+
+        for (var j = 0; j <= cta.children.length - 1; j++) {
+          cta.children[j].className = cta.children[j].className.replace(regexHere, '');
+        }
       } // Removes background color of right and wrong answer when new question comes
 
 
@@ -6466,6 +6480,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
           wrongTwoBtn.textContent = values[questionIndex][4];
           wrongThreeBtn.textContent = values[questionIndex][5];
           setTimer(parseInt(values[questionIndex][1]));
+          removeQuestionNumber();
           randomAnswers();
           removeColor();
           questionIndex++;
@@ -6596,7 +6611,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54801" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64225" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
