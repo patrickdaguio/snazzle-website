@@ -18,7 +18,7 @@ export class QuizMaker extends Highway.Renderer {
     const finishQuizBtn = document.querySelector('.finishBtn')
     const endQuiz = document.querySelector('.endQuiz')
     const errorMsgTitle = document.querySelector('.quiz-create__error--title')
-    const errorMsgInput= document.querySelector('.quiz-create__error--input')
+    const errorMsgInput = document.querySelector('.quiz-create__error--input')
     const setQuizTitle = document.querySelector('.quiz-create__btn--set')
 
     // Event listeners
@@ -37,9 +37,9 @@ export class QuizMaker extends Highway.Renderer {
     function duplicateQuizWarning() {
       if (quiz.map(item => item.title).indexOf(quizTitle.value) >= 0) {
         errorMsgTitle.textContent = 'Quiz already exists'
-      } 
+      }
     }
-    
+
     // Clears inputs
     function clearInputs() {
       quizQuestion.value = ''
@@ -53,11 +53,15 @@ export class QuizMaker extends Highway.Renderer {
     // Checks if title and inputs been filled in before finishing/submitting quiz
     function finishQuiz() {
       let index = quiz.map(item => item.title).indexOf(quizTitle.value)
-      if (quiz[index].questions.length === 0) {
+      if (quizTitle.value == '') {
+        errorMsgTitle.textContent = 'Please provide a title'
+      }
+      else if (quiz[index].questions.length === 0) {
         checkInput()
-        errorMsgInput.textContent = 'Please add your question and answers'
+        errorMsgInput.textContent = 'Please add question and answers'
         endQuiz.setAttribute('href', '#')
-      } else {
+      }
+      else {
         endQuiz.setAttribute('href', '/index.html')
       }
     }
@@ -93,7 +97,7 @@ export class QuizMaker extends Highway.Renderer {
         errorMsgTitle.textContent = ''
         setQuizTitle.style.backgroundColor = '#69699c'
         setQuizTitle.style.color = 'white'
-        quiz.push({title: quizTitle.value, questions: []})
+        quiz.push({ title: quizTitle.value, questions: [] })
         localStorage.setItem('quiz', JSON.stringify(quiz))
         quizTitle.readOnly = true
         endQuiz.setAttribute('href', '/index.html')
@@ -104,7 +108,6 @@ export class QuizMaker extends Highway.Renderer {
     function addQuestion() {
       if (quizTitle.readOnly === false) {
         errorMsgTitle.textContent = 'Please set a new quiz title'
-        clearInputs()
       } else if (checkInput() === true) {
         saveQuestion(quizQuestion.value, correctAnswer.value, wrongOneAnswer.value, wrongTwoAnswer.value, wrongThreeAnswer.value, quizQuestionTime.value)
         clearInputs()
@@ -113,9 +116,9 @@ export class QuizMaker extends Highway.Renderer {
 
     // Saves question and answers to localStorage
     function saveQuestion(question, correct, wrongOne, wrongTwo, wrongThree, time) {
-        let index = quiz.map(item => item.title).indexOf(quizTitle.value)
-        quiz[index].questions.push({question: question, time: time, correct: correct, wrongOne: wrongOne, wrongTwo: wrongTwo, wrongThree: wrongThree})
-        localStorage.setItem('quiz', JSON.stringify(quiz))
+      let index = quiz.map(item => item.title).indexOf(quizTitle.value)
+      quiz[index].questions.push({ question: question, time: time, correct: correct, wrongOne: wrongOne, wrongTwo: wrongTwo, wrongThree: wrongThree })
+      localStorage.setItem('quiz', JSON.stringify(quiz))
     }
   }
 }
@@ -204,7 +207,7 @@ export class QuizBank extends Highway.Renderer {
 
     // Functionality to display chosen Quiz to DOM 
     const selectedQuiz = document.querySelectorAll('.fa-play-circle')
-    selectedQuiz.forEach((circle, i) => circle.addEventListener('click', function() {
+    selectedQuiz.forEach((circle, i) => circle.addEventListener('click', function () {
       quizTitleIndex = i
       quizBank.style.display = 'none'
       quizTime.style.display = 'block'
@@ -212,13 +215,31 @@ export class QuizBank extends Highway.Renderer {
     }))
     // Deletes selected Quiz from DOM 
     const trashQuiz = document.querySelectorAll('.fa-trash-alt')
+    const warningContainer = document.querySelector('.quiz-bank__warning')
+    const warningBtns = document.querySelectorAll('.quiz-bank__warning__btn')
+    const warningQuizTitle = document.querySelector('.quiz-bank__warning__selectedQuiz')
+
     trashQuiz.forEach(circle => {
       circle.addEventListener('click', e => {
+        warningContainer.style.display = 'flex'
         const deleteQuiz = e.target.parentElement.parentElement
         const deleteQuizTitle = e.target.parentElement.parentElement.firstChild.textContent
-        deleteQuiz.classList.add('fall')
-        removeQuiz(deleteQuizTitle)
-        deleteQuiz.addEventListener('transitionend', () => deleteQuiz.remove())
+        warningQuizTitle.textContent = deleteQuizTitle
+        warningBtns.forEach(btn => {
+          btn.addEventListener('click', () => {
+            if (btn.textContent === 'Yes') {
+              deleteQuiz.classList.add('fall')
+              removeQuiz(deleteQuizTitle)
+              warningContainer.style.display = 'none'
+              deleteQuiz.addEventListener('transitionend', () => {
+                deleteQuiz.remove()
+              })
+            } else {
+              warningContainer.style.display = 'none'
+            }
+          })
+        })
+
       })
     })
 
@@ -279,26 +300,26 @@ export class QuizBank extends Highway.Renderer {
           if (selectedAnswer.classList.contains('correctBtn')) {
             selectedAnswerWrapper.classList.add('correct')
             displayTotal()
-          // Wrong answer chosen - finds correct answer and reveal it
+            // Wrong answer chosen - finds correct answer and reveal it
           } else if (selectedAnswer.classList.contains('wrongBtn')) {
             selectedAnswerWrapper.classList.add('wrong')
             let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
             for (let i = 0; i < itemChildren.length; i++) {
-              if (itemChildren[i].classList.contains('correctBtn')) { 
-                 itemChildren[i].parentNode.classList.add('correct')
-                }
+              if (itemChildren[i].classList.contains('correctBtn')) {
+                itemChildren[i].parentNode.classList.add('correct')
               }
             }
-            // Prevents user from receiving multiple correct answers 
-            let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
-            for (let i = 0; i < itemChildren.length; i++) {
-              itemChildren[i].classList.remove('correctBtn')
-              itemChildren[i].classList.remove('wrongBtn')
-            }
-            // Stops timer
-            clearInterval(timerId)
-            countdownCircle.classList.remove('resetTimer')
-        }) 
+          }
+          // Prevents user from receiving multiple correct answers 
+          let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
+          for (let i = 0; i < itemChildren.length; i++) {
+            itemChildren[i].classList.remove('correctBtn')
+            itemChildren[i].classList.remove('wrongBtn')
+          }
+          // Stops timer
+          clearInterval(timerId)
+          countdownCircle.classList.remove('resetTimer')
+        })
       })
     }
 
@@ -316,14 +337,14 @@ export class QuizBank extends Highway.Renderer {
       }
 
       for (let i = cta.children.length - 1; i >= 0; i--) {
-        cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${questionNumber}`);        
+        cta.appendChild(cta.children[Math.random() * i | 0]).classList.add(`quiz-play__answer--${questionNumber}`);
         questionNumber++
       }
 
       if (questionNumber === 13) questionNumber = 10
     }
 
-    function removeQuestionNumber () {
+    function removeQuestionNumber() {
       const cta = document.querySelector('.quiz-play__answers');
       let regexHere = /quiz-play__answer--[0-9]+/g
 
@@ -353,8 +374,8 @@ export class QuizBank extends Highway.Renderer {
 
       let countdown = time
       countdownCircle.style.animationDuration = `${countdown}s`
-      
-      timerId = setInterval(function() {
+
+      timerId = setInterval(function () {
         countdown = --countdown
         questionTimer.textContent = countdown
         if (countdown === 0) {
@@ -362,11 +383,11 @@ export class QuizBank extends Highway.Renderer {
           clearInterval(timerId)
           countdownCircle.classList.remove('resetTimer')
           answerGiven = true
-          
+
           // Finds correct wrong for user to see
           let itemChildren = document.querySelectorAll('.quiz-play__answer__text')
           for (let i = 0; i < itemChildren.length; i++) {
-            if (itemChildren[i].classList.contains('correctBtn')) { 
+            if (itemChildren[i].classList.contains('correctBtn')) {
               itemChildren[i].parentNode.classList.add('correct')
             }
           }
@@ -388,9 +409,9 @@ export class QuizBank extends Highway.Renderer {
           showResults()
           countdownCircle.classList.remove('resetTimer')
           quizResults.style.display = "flex"
-          quizTime.style.display = "none"  
+          quizTime.style.display = "none"
           questionIndex = 0
-          totalAnswersCorrect = 0   
+          totalAnswersCorrect = 0
         }
         countdownCircle.classList.remove('resetTimer')
         let values = []
@@ -413,7 +434,7 @@ export class QuizBank extends Highway.Renderer {
       answerGiven = false
       checkLastQuestion()
     }
-    
+
     // Checks if quiz is on last question 
     function checkLastQuestion() {
       if (questionIndex === quiz[quizTitleIndex].questions.length) nextBtn.textContent = 'FINISH'
@@ -430,7 +451,7 @@ export class QuizBank extends Highway.Renderer {
     const quizRestart = document.querySelector('.quiz-results__btn--restart')
 
     function showResults() {
-      let result = Math.round((totalAnswersCorrect/quiz[quizTitleIndex].questions.length) * 100);
+      let result = Math.round((totalAnswersCorrect / quiz[quizTitleIndex].questions.length) * 100);
       quizCorrect.textContent = totalAnswersCorrect
       quizIncorrect.textContent = quiz[quizTitleIndex].questions.length
       quizScore.textContent = result
@@ -440,7 +461,7 @@ export class QuizBank extends Highway.Renderer {
 
     function restartQuiz() {
       quizResults.style.display = "none"
-      quizTime.style.display = "block"  
+      quizTime.style.display = "block"
       clearInterval(timerId)
       startQuiz()
     }

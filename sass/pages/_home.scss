@@ -29,6 +29,12 @@
     background-color: white;
     position: relative;
     color: #69699c;
+    &--create {
+      color: #69699c;
+    }
+    &--play {
+      color: #277aa3;
+    }
     &::after {
       content: "";
       display: inline-block;
@@ -60,13 +66,5 @@
   background: linear-gradient(to right, #277aa3, #0cb3d5);
   &:hover {
     transform: scale(1.1);
-  }
-  &__btn {
-    background-color: white;
-    color: #277aa3;
-    &:hover {
-      background-color: #69699c;
-      color: white;
-    }
   }
 }

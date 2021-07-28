@@ -6,8 +6,57 @@
   width: auto;
   border-radius: 2em;
   padding: 2em 2em 3em;
+  position: relative;
   @include media("<=550px") {
     margin-top: 3em;
+  }
+  &__warning {
+    background: rgba(99, 84, 84, 0.5);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+
+    &__container {
+      background: white;
+      padding: 1.5em;
+      border-radius: 0.4em;
+      color: white;
+      text-align: center;
+      margin: 1em;
+      h3 {
+        color:#69699c;
+        margin-bottom: 1em;
+        @include media("<=550px") {
+          font-size: 1em;
+        }
+      }
+    }
+
+    &__selectedQuiz {
+      text-decoration: underline;
+    }
+
+    &__btn {
+      padding: 0.3em 1em;
+      background-color: #69699c;
+      color:white;
+      &:nth-child(1) {
+        margin-right: 0.5em;
+        &:hover {
+          background: #bf3749;
+        }
+      }
+      &:nth-child(2) {
+        &:hover {
+          background: #29d190;
+        }
+      }
+    }
   }
 
   &__quiz-wrapper {

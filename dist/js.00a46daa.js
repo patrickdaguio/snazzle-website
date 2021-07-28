@@ -6107,9 +6107,11 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
           return item.title;
         }).indexOf(quizTitle.value);
 
-        if (quiz[index].questions.length === 0) {
+        if (quizTitle.value == '') {
+          errorMsgTitle.textContent = 'Please provide a title';
+        } else if (quiz[index].questions.length === 0) {
           checkInput();
-          errorMsgInput.textContent = 'Please add your question and answers';
+          errorMsgInput.textContent = 'Please add question and answers';
           endQuiz.setAttribute('href', '#');
         } else {
           endQuiz.setAttribute('href', '/index.html');
@@ -6163,7 +6165,6 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
       function addQuestion() {
         if (quizTitle.readOnly === false) {
           errorMsgTitle.textContent = 'Please set a new quiz title';
-          clearInputs();
         } else if (checkInput() === true) {
           saveQuestion(quizQuestion.value, correctAnswer.value, wrongOneAnswer.value, wrongTwoAnswer.value, wrongThreeAnswer.value, quizQuestionTime.value);
           clearInputs();
@@ -6289,14 +6290,28 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       }); // Deletes selected Quiz from DOM 
 
       var trashQuiz = document.querySelectorAll('.fa-trash-alt');
+      var warningContainer = document.querySelector('.quiz-bank__warning');
+      var warningBtns = document.querySelectorAll('.quiz-bank__warning__btn');
+      var warningQuizTitle = document.querySelector('.quiz-bank__warning__selectedQuiz');
       trashQuiz.forEach(function (circle) {
         circle.addEventListener('click', function (e) {
+          warningContainer.style.display = 'flex';
           var deleteQuiz = e.target.parentElement.parentElement;
           var deleteQuizTitle = e.target.parentElement.parentElement.firstChild.textContent;
-          deleteQuiz.classList.add('fall');
-          removeQuiz(deleteQuizTitle);
-          deleteQuiz.addEventListener('transitionend', function () {
-            return deleteQuiz.remove();
+          warningQuizTitle.textContent = deleteQuizTitle;
+          warningBtns.forEach(function (btn) {
+            btn.addEventListener('click', function () {
+              if (btn.textContent === 'Yes') {
+                deleteQuiz.classList.add('fall');
+                removeQuiz(deleteQuizTitle);
+                warningContainer.style.display = 'none';
+                deleteQuiz.addEventListener('transitionend', function () {
+                  deleteQuiz.remove();
+                });
+              } else {
+                warningContainer.style.display = 'none';
+              }
+            });
           });
         });
       }); // Removes selected Quiz from LocalStorage
@@ -6589,7 +6604,7 @@ var H = new _highway.default.Core({
     default: _transition.default
   }
 });
-},{"@dogstudio/highway":"node_modules/@dogstudio/highway/build/highway.module.js","./transition":"js/transition.js","./renderer":"js/renderer.js"}],"../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+},{"@dogstudio/highway":"node_modules/@dogstudio/highway/build/highway.module.js","./transition":"js/transition.js","./renderer":"js/renderer.js"}],"../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -6617,7 +6632,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "63000" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64438" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
@@ -6793,5 +6808,5 @@ function hmrAcceptRun(bundle, id) {
     return true;
   }
 }
-},{}]},{},["../../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/index.js"], null)
+},{}]},{},["../../../../AppData/Roaming/npm/node_modules/parcel-bundler/src/builtins/hmr-runtime.js","js/index.js"], null)
 //# sourceMappingURL=/js.00a46daa.js.map
