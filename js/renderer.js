@@ -139,7 +139,7 @@ export class QuizBank extends Highway.Renderer {
     const questionTimer = document.querySelector('.quiz-play__time');
     const currentQuestion = document.querySelector('.quiz-play__question')
     const answersTally = document.querySelector('.quiz-play__correct')
-    const questionAnswers = document.querySelectorAll('.quiz-play__answer__icon')
+    const questionAnswers = document.querySelectorAll('.fa-check-circle')
     const correctBtn = document.querySelector('.correctBtn')
     const wrongOneBtn = document.querySelector('.wrongOneBtn')
     const wrongTwoBtn = document.querySelector('.wrongTwoBtn')
@@ -291,7 +291,7 @@ export class QuizBank extends Highway.Renderer {
     // Checks if user's answer is right/wrong and displays right answer if wrong is chosen 
     function findCorrectAnswer() {
       answersTally.textContent = `${totalAnswersCorrect}`
-      questionAnswers.forEach((answer, i) => {
+      questionAnswers.forEach(answer => {
         answer.addEventListener('click', e => {
           const selectedAnswer = e.target.parentNode.parentNode.children[0]
           const selectedAnswerWrapper = e.target.parentNode.parentNode
@@ -358,11 +358,11 @@ export class QuizBank extends Highway.Renderer {
       const quizBoxes = document.querySelectorAll('.quiz-play__answer')
       quizBoxes.forEach(btn => {
         if (btn.classList.contains('correct')) {
-          btn.children[0].classList.add('correctBtn')
           btn.classList.remove('correct')
+          btn.children[0].classList.add('correctBtn')
         } else {
-          btn.children[0].classList.add('wrongBtn')
           btn.classList.remove('wrong')
+          btn.children[0].classList.add('wrongBtn')
         }
       })
     }
@@ -463,7 +463,11 @@ export class QuizBank extends Highway.Renderer {
       quizResults.style.display = "none"
       quizTime.style.display = "block"
       clearInterval(timerId)
+      removeColor()
       startQuiz()
     }
   }
 }
+
+
+// WHEN YOU TOUCH THE OTUTSIDE IT ERRORS SO THE EVENT LISTENER COULD BE ATTACHED TO THE WRONG AREA

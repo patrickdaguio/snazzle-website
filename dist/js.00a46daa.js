@@ -6221,7 +6221,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
       var questionTimer = document.querySelector('.quiz-play__time');
       var currentQuestion = document.querySelector('.quiz-play__question');
       var answersTally = document.querySelector('.quiz-play__correct');
-      var questionAnswers = document.querySelectorAll('.quiz-play__answer__icon');
+      var questionAnswers = document.querySelectorAll('.fa-check-circle');
       var correctBtn = document.querySelector('.correctBtn');
       var wrongOneBtn = document.querySelector('.wrongOneBtn');
       var wrongTwoBtn = document.querySelector('.wrongTwoBtn');
@@ -6360,7 +6360,7 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
       function findCorrectAnswer() {
         answersTally.textContent = "".concat(totalAnswersCorrect);
-        questionAnswers.forEach(function (answer, i) {
+        questionAnswers.forEach(function (answer) {
           answer.addEventListener('click', function (e) {
             var selectedAnswer = e.target.parentNode.parentNode.children[0];
             var selectedAnswerWrapper = e.target.parentNode.parentNode;
@@ -6374,9 +6374,9 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
               var _itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
-              for (var _i = 0; _i < _itemChildren.length; _i++) {
-                if (_itemChildren[_i].classList.contains('correctBtn')) {
-                  _itemChildren[_i].parentNode.classList.add('correct');
+              for (var i = 0; i < _itemChildren.length; i++) {
+                if (_itemChildren[i].classList.contains('correctBtn')) {
+                  _itemChildren[i].parentNode.classList.add('correct');
                 }
               }
             } // Prevents user from receiving multiple correct answers 
@@ -6384,10 +6384,10 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
 
             var itemChildren = document.querySelectorAll('.quiz-play__answer__text');
 
-            for (var _i2 = 0; _i2 < itemChildren.length; _i2++) {
-              itemChildren[_i2].classList.remove('correctBtn');
+            for (var _i = 0; _i < itemChildren.length; _i++) {
+              itemChildren[_i].classList.remove('correctBtn');
 
-              itemChildren[_i2].classList.remove('wrongBtn');
+              itemChildren[_i].classList.remove('wrongBtn');
             } // Stops timer
 
 
@@ -6432,11 +6432,11 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         var quizBoxes = document.querySelectorAll('.quiz-play__answer');
         quizBoxes.forEach(function (btn) {
           if (btn.classList.contains('correct')) {
-            btn.children[0].classList.add('correctBtn');
             btn.classList.remove('correct');
+            btn.children[0].classList.add('correctBtn');
           } else {
-            btn.children[0].classList.add('wrongBtn');
             btn.classList.remove('wrong');
+            btn.children[0].classList.add('wrongBtn');
           }
         });
       } // Countdown which sets timer for each question
@@ -6465,10 +6465,10 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
             } // Removes classes that gives user a correct answer
 
 
-            for (var _i3 = 0; _i3 < itemChildren.length; _i3++) {
-              itemChildren[_i3].classList.remove('correctBtn');
+            for (var _i2 = 0; _i2 < itemChildren.length; _i2++) {
+              itemChildren[_i2].classList.remove('correctBtn');
 
-              itemChildren[_i3].classList.remove('wrongBtn');
+              itemChildren[_i2].classList.remove('wrongBtn');
             }
           }
         }, 1000);
@@ -6538,13 +6538,15 @@ var QuizBank = /*#__PURE__*/function (_Highway$Renderer2) {
         quizResults.style.display = "none";
         quizTime.style.display = "block";
         clearInterval(timerId);
+        removeColor();
         startQuiz();
       }
     }
   }]);
 
   return QuizBank;
-}(_highway.default.Renderer);
+}(_highway.default.Renderer); // WHEN YOU TOUCH THE OTUTSIDE IT ERRORS SO THE EVENT LISTENER COULD BE ATTACHED TO THE WRONG AREA
+
 
 exports.QuizBank = QuizBank;
 },{"@dogstudio/highway":"node_modules/@dogstudio/highway/build/highway.module.js"}],"js/index.js":[function(require,module,exports) {
@@ -6632,7 +6634,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "64438" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59645" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

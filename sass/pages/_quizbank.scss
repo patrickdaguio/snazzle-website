@@ -20,6 +20,7 @@
     align-items: center;
     top: 0;
     left: 0;
+    z-index: 5;
 
     &__container {
       background: white;
@@ -29,7 +30,7 @@
       text-align: center;
       margin: 1em;
       h3 {
-        color:#69699c;
+        color: #69699c;
         margin-bottom: 1em;
         @include media("<=550px") {
           font-size: 1em;
@@ -44,7 +45,7 @@
     &__btn {
       padding: 0.3em 1em;
       background-color: #69699c;
-      color:white;
+      color: white;
       &:nth-child(1) {
         margin-right: 0.5em;
         &:hover {

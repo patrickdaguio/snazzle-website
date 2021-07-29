@@ -157,9 +157,11 @@
       color: #0cb3d5;
       font-size: 1.4em;
       margin-left: 0.5em;
-      &:hover {
-        color: #29d190;
-        cursor: pointer;
+      .fa-check-circle {
+        &:hover {
+          color: #29d190;
+          cursor: pointer;
+        }
       }
       @include media("<=700px") {
         font-size: 1.2em;
@@ -191,8 +193,10 @@
   }
   .quiz-play__answer__icon {
     color: white;
-    &:hover {
-      color: none;
+    .fa-check-circle {
+      &:hover {
+        color: white;
+      }
     }
   }
 }
@@ -205,8 +209,10 @@
   }
   .quiz-play__answer__icon {
     color: white;
-    &:hover {
-      color: none;
+    .fa-check-circle {
+      &:hover {
+        color: white;
+      }
     }
   }
 }
