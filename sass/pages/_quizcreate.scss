@@ -90,7 +90,7 @@
       font-size: 1.1em;
     }
     span {
-      font-size: 0.75em;
+      font-size: 0.42em;
     }
   }
   &__question {
@@ -137,6 +137,9 @@
       &:hover {
         background-color: #69699c;
         color: white;
+      }
+      @include media("<=550px") {
+        font-size: 0.63em;
       }
     }
   }

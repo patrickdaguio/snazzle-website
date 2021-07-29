@@ -6109,6 +6109,8 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
 
         if (quizTitle.value == '') {
           errorMsgTitle.textContent = 'Please provide a title';
+        } else if (quizTitle.readOnly === false) {
+          errorMsgTitle.textContent = 'Please set a new quiz title';
         } else if (quiz[index].questions.length === 0) {
           checkInput();
           errorMsgInput.textContent = 'Please add question and answers';
@@ -6124,8 +6126,8 @@ var QuizMaker = /*#__PURE__*/function (_Highway$Renderer) {
           errorMsgInput.textContent = 'Please provide a question';
         } else if (quizQuestionTime.value === '' || /^\d+$/.test(quizQuestionTime.value) === false) {
           errorMsgInput.textContent = 'Please provide a time';
-        } else if (parseInt(quizQuestionTime.value) > 90) {
-          errorMsgInput.textContent = 'Time exceeds limit';
+        } else if (parseInt(quizQuestionTime.value) > 120) {
+          errorMsgInput.textContent = 'Time exceeds limit (1s - 120s)';
         } else if (correctAnswer.value === '') {
           errorMsgInput.textContent = 'Please provide a correct answer';
         } else if (wrongOneAnswer.value === '' && wrongTwoAnswer.value === '' && wrongThreeAnswer.value === '') {
