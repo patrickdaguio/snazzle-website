@@ -1,6 +1,6 @@
 import Highway from '@dogstudio/highway'
 import Slide from './transition'
-import { QuizTime, QuizMaker, QuizBank } from './renderer'
+import { QuizMaker, QuizBank } from './renderer'
 
 // ===============
 // LOGO ANIMATION
