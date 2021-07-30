@@ -1,0 +1,129 @@
+.quiz-bank {
+  background: linear-gradient(to right, #277aa3, #0cb3d5);
+  opacity: 1;
+  display: block;
+  height: auto;
+  width: auto;
+  border-radius: 2em;
+  padding: 2em 2em 3em;
+  position: relative;
+  @include media("<=550px") {
+    margin-top: 3em;
+  }
+  &__warning {
+    background: rgba(99, 84, 84, 0.5);
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    display: none;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    left: 0;
+    z-index: 5;
+
+    &__container {
+      background: white;
+      padding: 1.5em;
+      border-radius: 0.4em;
+      color: white;
+      text-align: center;
+      margin: 1em;
+      h3 {
+        color: #69699c;
+        margin-bottom: 1em;
+        @include media("<=550px") {
+          font-size: 1em;
+        }
+      }
+    }
+
+    &__selectedQuiz {
+      text-decoration: underline;
+    }
+
+    &__btn {
+      padding: 0.3em 1em;
+      background-color: #69699c;
+      color: white;
+      &:nth-child(1) {
+        margin-right: 0.5em;
+        &:hover {
+          background: #bf3749;
+        }
+      }
+      &:nth-child(2) {
+        &:hover {
+          background: #29d190;
+        }
+      }
+    }
+  }
+
+  &__quiz-wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1.5em 2em;
+    align-items: center;
+    @include media("<800px") {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  &__heading {
+    margin-bottom: 0.75em;
+  }
+  &__quiz {
+    display: flex;
+    background-color: #69699c;
+    border-radius: 8px;
+    padding: 0.5em 1em;
+    align-items: center;
+    justify-content: center;
+    max-width: 350px;
+    transition: all 0.5s ease;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    &:hover {
+      transform: translate(-7px, 2px);
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    }
+
+    &__title {
+      flex: 1;
+      color: white;
+      margin-right: 1.5em;
+      font-weight: 400;
+      @include media("<500px") {
+        font-size: 0.85em;
+      }
+    }
+    &__icon {
+      color: white;
+      font-size: 1.2em;
+      transition: 0.3s;
+      cursor: pointer;
+      @include media("<500px") {
+        font-size: 0.9em;
+      }
+      &--play {
+        margin-right: 0.75em;
+        font-size: 1.3em;
+        @include media("<500px") {
+          font-size: 1em;
+        }
+        &:hover {
+          color: #29d190;
+        }
+      }
+      &--delete {
+        &:hover {
+          color: #bf3749;
+        }
+      }
+    }
+  }
+}
+
+.fall {
+  transform: translateY(8rem) rotateZ(0deg);
+  opacity: 0;
+}

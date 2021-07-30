@@ -1,0 +1,30 @@
+html {
+  box-sizing: border-box;
+  overflow: auto;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Rubik", sans-serif;
+  background-color: #cfd9df;
+  min-height: 100vh;
+  padding: 2em;
+  overflow-x: hidden;
+}
+
+.container {
+  position: relative;
+  max-width: 1440px;
+  margin: 0 auto;
+}
+
+.main {
+  position: relative;
+}

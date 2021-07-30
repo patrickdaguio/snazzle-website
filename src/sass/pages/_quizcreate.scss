@@ -1,0 +1,197 @@
+.quiz-create {
+  background: linear-gradient(to right, #353369, #69699c);
+  opacity: 1;
+  height: 575px;
+  width: 650px;
+  align-items: stretch;
+  justify-content: flex-start;
+  color: white;
+  padding: 1.5em 3em;
+  margin-top: -3.5em;
+  @include media("<=1050px") {
+    margin-top: 1em;
+  }
+  @include media(">550px", "<=725px") {
+    margin-top: 1.5em;
+    padding: 1.75em;
+    width: 525px;
+  }
+  @include media("<=550px") {
+    width: 325px;
+    height: 680px;
+    padding: 1.75em;
+    margin-top: 1.5em;
+  }
+  &__heading {
+    text-align: center;
+    margin-bottom: 0.5em;
+  }
+  &__error {
+    color: #bf3749;
+    font-weight: 700;
+    margin-left: 1em;
+    font-size: 1em;
+    @include media("<=550px") {
+      font-size: 0.75em;
+    }
+  }
+  &__title-wrapper {
+    margin-bottom: 1em;
+  }
+  &__input-wrapper {
+    display: flex;
+  }
+  &__title {
+    padding: 0.75em 1.25em;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    width: 100%;
+    @include media("<=550px") {
+      font-size: 0.8em;
+      padding: 0.5em 1em;
+    }
+  }
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    @include media("<=550px") {
+      flex-direction: column;
+    }
+  }
+  &__question-wrapper {
+    margin-right: 1em;
+    width: 100%;
+  }
+  &__time-wrapper {
+    width: 27%;
+    @include media("<=550px") {
+      width: 50%;
+      margin-top: 1em;
+    }
+  }
+  &__time {
+    padding: 0.75em 1.25em;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    width: 100%;
+    @include media("<=550px") {
+      font-size: 0.8em;
+      padding: 0.5em 1em;
+    }
+  }
+  &__label {
+    font-size: 1.5em;
+    display: inline-block;
+    letter-spacing: 1px;
+    margin-bottom: 0.4em;
+    @include media("<=550px") {
+      font-size: 1.1em;
+    }
+    span {
+      font-size: 0.42em;
+    }
+  }
+  &__question {
+    padding: 0.75em 1.25em;
+    border: none;
+    border-radius: 8px;
+    outline: none;
+    width: 100%;
+    @include media("<=550px") {
+      font-size: 0.8em;
+      padding: 0.5em 1em;
+    }
+  }
+  &__wrapper {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 2em;
+    margin: 2em 0em;
+    @include media("<=550px") {
+      grid-template-columns: repeat(1, 1fr);
+    }
+  }
+  &__btn {
+    background-color: white;
+    color: #69699c;
+    width: 100%;
+    &--add {
+      margin-bottom: 1.5em;
+      &:hover {
+        background-color: #29d190;
+        color: white;
+      }
+    }
+    &--finish {
+      &:hover {
+        background-color: #bf3749;
+        color: white;
+      }
+    }
+    &--set {
+      width: 35%;
+      margin-left: 0.75em;
+      padding: 0.5em;
+      &:hover {
+        background-color: #69699c;
+        color: white;
+      }
+      @include media("<=550px") {
+        font-size: 0.63em;
+      }
+    }
+  }
+
+  &__input {
+    position: relative;
+  }
+  &__answer {
+    box-sizing: border-box;
+    display: block;
+    width: 100%;
+    padding: 0.75em 1.25em;
+    border: none;
+    color: black;
+    background: white;
+    border-radius: 8px;
+    outline: none;
+    &:focus,
+    &:not(:placeholder-shown) {
+      & + .quiz-create__text {
+        transform: translate(0.25rem, -65%) scale(0.8);
+        background: white;
+      }
+      & + .quiz-create__text--correct {
+        color: #29d190;
+      }
+      & + .quiz-create__text--wrong {
+        color: #bf3749;
+      }
+    }
+    @include media("<=550px") {
+      font-size: 0.8em;
+      padding: 0.5em 1em;
+    }
+  }
+  &__text {
+    position: absolute;
+    left: 0;
+    top: 0;
+    padding: 0.25em 0.5em;
+    margin: 4px 5px;
+    color: #69699c;
+    background: white;
+    border-radius: 8px;
+    white-space: nowrap;
+    transform: translate(0, 0);
+    transform-origin: 0 0;
+    transition: transform 120ms ease-in;
+    font-weight: bold;
+    line-height: 1.2;
+    @include media("<=550px") {
+      font-size: 0.7em;
+    }
+  }
+}
