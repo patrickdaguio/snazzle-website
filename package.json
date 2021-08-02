@@ -6,14 +6,17 @@
   "scripts": {
     "dev": "parcel src/index.html",
     "build": "parcel build src/index.html"
-    },
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@dogstudio/highway": "^2.2.2",
-    "gsap": "^3.6.1"
+    "gsap": "^3.6.1",
+    "node-sass": "^6.0.1"
   },
   "devDependencies": {
+    "cssnano": "^5.0.7",
+    "postcss": "^8.3.6",
     "sass": "^1.32.12"
   }
 }

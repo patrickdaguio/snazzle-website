@@ -75,7 +75,7 @@ export class QuizMaker extends Highway.Renderer {
       } else if (quizQuestionTime.value === '' || /^\d+$/.test(quizQuestionTime.value) === false) {
         errorMsgInput.textContent = 'Please provide a time'
       } else if (parseInt(quizQuestionTime.value) > 120) {
-        errorMsgInput.textContent = 'Time exceeds limit (1s - 120s)'
+        errorMsgInput.textContent = 'Time exceeds limit'
       } else if (correctAnswer.value === '') {
         errorMsgInput.textContent = 'Please provide a correct answer'
       } else if (wrongOneAnswer.value === '' && wrongTwoAnswer.value === '' && wrongThreeAnswer.value === '') {
@@ -97,6 +97,7 @@ export class QuizMaker extends Highway.Renderer {
       } // Removes error message and sets quiz title to localStorage
       else {
         errorMsgTitle.textContent = ''
+        setQuizTitle.removeEventListener('click', checkTitle)
         setQuizTitle.style.backgroundColor = '#69699c'
         setQuizTitle.style.color = 'white'
         quiz.push({ title: quizTitle.value, questions: [] })
@@ -149,6 +150,7 @@ export class QuizBank extends Highway.Renderer {
     const countdownCircle = document.getElementById('foo')
     const nextBtn = document.querySelector('.quiz-play__btn')
     const header = document.querySelector('.header')
+    const emptyQuizBtn = document.querySelector('.emptyQuiz')
 
     header.addEventListener('click', () => clearInterval(timerId))
 
@@ -173,6 +175,17 @@ export class QuizBank extends Highway.Renderer {
     let quiz
     if (localStorage.getItem('quiz') === null) quiz = []
     else quiz = JSON.parse(localStorage.getItem('quiz'))
+
+
+    function showQuizTitles() {
+      if (quiz.length === 0) {
+        emptyQuizBtn.style.display = 'block'
+        emptyQuizBtn.setAttribute('href', '/html/quizmaker.html')
+        quizBankWrapper.style.gridTemplateColumns = 'repeat(1, 1fr)'
+      }
+    }
+
+    showQuizTitles()
 
     // Fetches Quiz titles from LocalStorage and displays on DOM
     function getQuizTitle() {
@@ -236,12 +249,12 @@ export class QuizBank extends Highway.Renderer {
               deleteQuiz.addEventListener('transitionend', () => {
                 deleteQuiz.remove()
               })
+              showQuizTitles()
             } else {
               warningContainer.style.display = 'none'
             }
           })
         })
-
       })
     })
 

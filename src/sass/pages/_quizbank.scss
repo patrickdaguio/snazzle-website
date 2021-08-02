@@ -10,6 +10,27 @@
   @include media("<=550px") {
     margin-top: 3em;
   }
+
+  &__quiz-empty {
+    background-color: #69699c;
+    text-align: center;
+    color: white;
+    border-radius: 0.4em;
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.1);
+    &:hover {
+      transform: translate(-7px, 2px);
+      box-shadow: 10px 10px 10px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .emptyQuiz {
+    outline: none;
+    text-decoration: none;
+    padding: 0.75em 0em;
+    display: none;
+    justify-self: center;
+  }
+
   &__warning {
     background: rgba(99, 84, 84, 0.5);
     position: absolute;

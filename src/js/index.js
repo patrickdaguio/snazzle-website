@@ -1,7 +1,6 @@
 import Highway from '@dogstudio/highway'
 import Slide from './transition'
 import { QuizMaker, QuizBank } from './renderer'
-import "../sass/style.scss"
 
 // ===============
 // LOGO ANIMATION
